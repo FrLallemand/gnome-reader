@@ -263,8 +263,8 @@ class Application(Gtk.Application):
         about_dialog = Gtk.AboutDialog(authors=["François Lallemand"], 
                                        copyright="EMPTYYYYYYY",
                                        program_name="Gnome-reader",
-                                       version="0.0.2",
-                                       license="WTFPL",
+                                       version="0.0.3",
+                                       license="GPL v3",
                                        license_type=Gtk.License.UNKNOWN,
                                        transient_for=self.window,
                                        modal=True)
