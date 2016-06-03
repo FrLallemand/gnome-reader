@@ -1,0 +1,93 @@
+
+<interface>
+    <object class="GtkHeaderBar" id ="header_bar">
+    <property name="visible">True</property>
+    <property name="show-close-button">True</property>
+    <property name="title" translatable="yes">Epub Reader</property>
+    <child>
+        <object class="GtkButton" id="open_epub_button">
+            <property name="visible">True</property>
+            <property name="action-name">win.open_epub</property>
+            <property name="label" translatable="yes">Open</property>
+        </object>
+        <packing>
+            <property name="pack-type">start</property>
+        </packing>
+    </child>
+    <child>
+        <object class="GtkBox" id="navigation_box">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <style>
+                <class name="linked"/>
+            </style>
+            <child>
+                <object class="GtkButton" id="navigation_previous_button">
+                    <property name="visible">True</property>
+                    <property name="action-name">win.go_previous_or_next</property>
+                    <property name="action-target">"previous"</property>
+                    <property name="sensitive">False</property>
+                    <child>
+                        <object class="GtkImage" id="navigation_previous_icon">
+                            <property name="visible">True</property>
+                            <property name="icon-name">go-previous-symbolic</property>
+                            <property name="icon-size">1</property>
+                        </object>
+                    </child>
+                </object>
+                <packing>
+                    <property name="pack-type">start</property>
+                </packing>
+            </child>
+            <child>
+                <object class="GtkButton" id="navigation_next_button">
+                    <property name="visible">True</property>
+                    <property name="action-name">win.go_previous_or_next</property>
+                    <property name="action-target">"next"</property>
+                    <property name="sensitive">False</property>
+                    <child>
+                        <object class="GtkImage" id="navigation_next_icon">
+                            <property name="visible">True</property>
+                            <property name="icon-name">go-next-symbolic</property>
+                            <property name="icon-size">1</property>
+                        </object>
+                    </child>
+                </object>
+                <packing>
+                    <property name="pack-type">start</property>
+                </packing>
+            </child>
+        </object>
+        <packing>
+            <property name="pack-type">start</property>
+        </packing>
+    </child>
+    <child>
+        <object class="GtkMenuButton" id="menu_button">
+            <property name="visible">True</property>
+            <property name="use-popover">True</property>
+            <property name="direction">none</property>    
+            <child>
+                <object class="GtkImage" id="menu_icon">
+                    <property name="visible">True</property>
+                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="icon-size">1</property>
+                </object>
+            </child>        
+        </object>
+        <packing>
+            <property name="pack-type">end</property>
+        </packing>
+    </child>
+    <child>
+        <object class="GtkMenuButton" id="chapters_button">
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="label" translatable="yes">Chapters</property>
+        </object>
+        <packing>
+            <property name="pack-type">end</property>
+        </packing>
+    </child>
+    </object>
+</interface>

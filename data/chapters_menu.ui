@@ -1,0 +1,13 @@
+
+<interface>
+    <object class="GtkPopoverMenu" id ="chapters_menu">
+      <child>
+        <object class="GtkBox" id="chapters_box">
+          <property name="visible">True</property>
+          <property name="margin">10</property>
+          <property name="spacing">2</property>
+          <property name="orientation">vertical</property>
+        </object>
+      </child>
+    </object>
+</interface>
