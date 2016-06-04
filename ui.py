@@ -12,6 +12,7 @@ from header import Header
 import sys
 import os
 import platform
+import mimetypes
 
 class AppWindow(Gtk.ApplicationWindow):
 
@@ -136,10 +137,22 @@ class AppWindow(Gtk.ApplicationWindow):
                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                                        Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
 
+        #If mime types for epub doesn't exist, adds it
+        if ".epub" not in mimetypes.types_map.keys():
+            mimetypes.add_type("application/epub+zip", ".epub")
+
         filter_epub = Gtk.FileFilter()
         filter_epub.set_name("Epub")
-        filter_epub.add_mime_type("application/epub+zip")
+        if os.name == "nt":
+            filter_epub.add_pattern("*.epub")
+        else:
+            filter_epub.add_mime_type("application/epub+zip")
+
+
         dialog.set_filter(filter_epub)
+
+        print filter_epub.get_needed()
+
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             epub = Epub(dialog.get_filename())
