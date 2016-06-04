@@ -10,8 +10,10 @@ from epub import Epub
 import sys
 import os
 import platform
-from urllib.parse import quote
-#from urllib import quote
+if(sys.version_info >= (3,0)):
+    from urllib.parse import quote
+else:
+    from urllib import quote
 
 
 class Viewer(WebKit.WebView):
