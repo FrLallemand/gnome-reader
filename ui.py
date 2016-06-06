@@ -24,48 +24,63 @@ class AppWindow(Gtk.ApplicationWindow):
         self.builder = Gtk.Builder()
 
         self.set_default_size(400, 600)
-        
+        self.set_resizable(True)
+        self.set_border_width(0)
+                
         self.accel_group = Gtk.AccelGroup()
         self.add_accel_group(self.accel_group)
 
-        self.connect("key-press-event", self.on_keypress)
-
-        self._create_actions()
 
         self.settings = Gtk.Settings().get_default()
         self.builder.add_from_resource("/org/gnome/gnome_reader/header_bar.ui")
 
-
         self.header = self.builder.get_object("header_bar")
-        self.menu_button = self.builder.get_object("menu_button")
-        
+        self.menu_button = self.builder.get_object("menu_button")        
         self.open_epub_button = self.builder.get_object("open_epub_button")
-        self.open_epub_button.add_accelerator("clicked", self.accel_group, Gdk.keyval_from_name("O"), Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
-
         self.navigation_previous_button = self.builder.get_object("navigation_previous_button")
         self.navigation_next_button = self.builder.get_object("navigation_next_button")
         self.chapters_button = self.builder.get_object("chapters_button")
 
+        self._create_actions()
+        self.connect("key-press-event", self.on_keypress)
+
         self.set_titlebar(self.header)
 
-        self.scrolled = Gtk.ScrolledWindow()
-        self.scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.scrolled.set_overlay_scrolling(True)        
         self.viewer = Viewer()
         self.viewer.load_page()
+
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolled.set_overlay_scrolling(True)
+        scrolled.add(self.viewer)
+
+
+
+        self.builder.add_from_resource("/org/gnome/gnome_reader/meta_data_view.ui")
         
-        self.scrolled.add(self.viewer)
-        self.add(self.scrolled)
-        
+        self.stack = Gtk.Stack()
+        self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT)
+        self.stack.set_transition_duration(350)
+        self.stack.add_named(scrolled, "main_view")
+        self.stack.add_named(self.builder.get_object("meta_data_grid"), "meta_data_view")
+        self.add(self.stack)
+
+        #Maybe add navigation button in overlay, in a future version ?
+        #overlay = Gtk.Overlay()
+        #overlay.add(scrolled)
+        #self.add(overlay)
+        #overlay.add_overlay(self.revealer)
+
         if self.settings.get_property("gtk-application-prefer-dark-theme"):
-            self.set_night_mode(True)        
+            self.set_night_mode(True)
             
         self.builder.add_from_resource("/org/gnome/gnome_reader/popover_menu.ui")
         popover = self.builder.get_object("popover_menu")
-        self.menu_button.set_popover(popover)
+        self.menu_button.set_popover(popover)       
         self.scale = self.builder.get_object("zoom_level_scale")
         self.scale.connect("value-changed", self._on_scale_value_changed)
         self.adjustment = self.builder.get_object("zoom_adjustment")
+        self.meta_data_display_button = self.builder.get_object("meta_data_display_button")
         
         self.builder.add_from_resource("/org/gnome/gnome_reader/chapters_menu.ui")
         self.chapters_menu = self.builder.get_object("chapters_menu")
@@ -100,7 +115,23 @@ class AppWindow(Gtk.ApplicationWindow):
         view_dezoom = Gio.SimpleAction.new("view_dezoom", None)
         view_dezoom.connect("activate", self._view_dezoom)
         self.add_action(view_dezoom)
-    
+        
+        display_meta_data = Gio.SimpleAction.new("display_meta_data", None)
+        display_meta_data.connect("activate", self._display_meta_data)
+        self.add_action(display_meta_data)
+
+    def _display_meta_data(self, action, state):
+        if self.stack.get_visible_child_name() == "main_view":        
+            self.change_view("meta_data_view")
+            self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT)
+        else:
+            self.change_view("main_view")
+            self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT)
+
+    def change_view(self, name):
+        self.stack.set_visible_child_name(name)
+        
+            
     def _toggle_night_mode(self, action, state):
         action.set_state(state)
         self.settings.set_property("gtk-application-prefer-dark-theme", state)
@@ -108,7 +139,7 @@ class AppWindow(Gtk.ApplicationWindow):
         
     def _populate_chapters_menu(self):
         def on_chapter_selected(action, user_data, chapter_pos):
-                self.viewer_jump(chapter_pos)
+            self.viewer_jump(chapter_pos)
         for i in range(0, len(self.viewer.epub.chapters)-1):
             chapter = self.viewer.epub.chapters[i]
             if chapter.title is not None:
@@ -151,8 +182,6 @@ class AppWindow(Gtk.ApplicationWindow):
 
         dialog.set_filter(filter_epub)
 
-        print filter_epub.get_needed()
-
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             epub = Epub(dialog.get_filename())
@@ -183,14 +212,14 @@ class AppWindow(Gtk.ApplicationWindow):
             else:
                 self.navigation_previous_button.set_sensitive(True)
 
-            self.chapters_button.set_sensitive(True)            
+            self.chapters_button.set_sensitive(True)
+            self.meta_data_display_button.set_sensitive(True)
+
         else:
             self.chapters_button.set_sensitive(False)
             self.navigation_previous_button.set_sensitive(False)
             self.navigation_next_button.set_sensitive(False)
-
-             
-
+            self.meta_data_display_button.set_sensitive(False)
 
         #titlebar._chapters_button.set_sensitive(True)
 
@@ -214,13 +243,17 @@ class AppWindow(Gtk.ApplicationWindow):
 
     def on_keypress(self, widget, data):
         keyval = ""
-        if Gdk.keyval_name(data.keyval) == "Left":
-            keyval = "previous"
-        if Gdk.keyval_name(data.keyval) == "Right":
-            keyval = "next"
-            
-        self.viewer_navigate(keyval)        
-                        
+        if self.stack.get_visible_child_name() == "main_view":
+            if Gdk.keyval_name(data.keyval) == "Left":
+                keyval = "previous"
+            if Gdk.keyval_name(data.keyval) == "Right":
+                keyval = "next"
+           
+            self.viewer_navigate(keyval)
+        else:
+            if Gdk.keyval_name(data.keyval) == "Escape":
+                self.change_view("main_view")
+
 class Application(Gtk.Application):
     def __init__(self,  *args, **kwargs):
         super(Gtk.Application, self).__init__(*args, application_id='org.gnome.gnome-reader',
@@ -253,6 +286,7 @@ class Application(Gtk.Application):
         
         self.set_accels_for_action("win.view_zoom", ["<Control>plus"])
         self.set_accels_for_action("win.view_dezoom", ["<Control>minus"])
+        self.set_accels_for_action("win.open_epub", ["<Control>o"])
 
         self.set_app_menu(menu)
         
@@ -278,7 +312,7 @@ class Application(Gtk.Application):
                                        program_name="Gnome-reader",
                                        version="0.0.3",
                                        license="GPL v3",
-                                       license_type=Gtk.License.UNKNOWN,
+                                       license_type=Gtk.License.GPL_3_0,
                                        transient_for=self.window,
                                        modal=True)
         about_dialog.present()

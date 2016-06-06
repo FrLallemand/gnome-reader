@@ -17,6 +17,13 @@
             </object>
           </child>
           <child>
+            <object class="GtkModelButton" id="meta_data_display_button">
+              <property name="visible">True</property>
+              <property name="action-name">win.display_meta_data</property>
+              <property name="text" translatable="yes">About the book</property>
+            </object>
+          </child>
+          <child>
             <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="orientation">0</property>

@@ -1,0 +1,31 @@
+<interface>
+    <object class="GtkGrid" id ="meta_data_grid">
+    <child>
+        <object class="GtkBox" id="author_box">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkLabel" id="author_label">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Author: </property>
+                </object>
+                <packing>
+                    <property name="pack-type">start</property>
+                </packing>
+            </child>
+            <child>
+                <object class="GtkEntry" id="author_entry">
+                    <property name="visible">True</property>
+                </object>
+                <packing>
+                    <property name="pack-type">end</property>
+                </packing>
+            </child>
+        </object>
+        <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
+        </packing>
+    </child>
+    </object>
+</interface>

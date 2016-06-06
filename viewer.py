@@ -9,7 +9,6 @@ from gi.repository import Gtk, Gio, GLib, WebKit, Gdk
 from epub import Epub
 import sys
 import os
-import platform
 if(sys.version_info >= (3,0)):
     from urllib.parse import quote
 else:
@@ -55,7 +54,7 @@ class Viewer(WebKit.WebView):
     def set_night_mode(self, state):
         settings = self.get_settings()
         night_css = "file://"+quote(os.getcwd()+"/data/night_mode.css")
-        if platform.system() is "Windows":
+        if os.name == "nt":
             night_css = "file://"+quote(os.getcwd().replace("\\", "/")+"/data/night_mode.css")
         if state:
             settings.props.user_stylesheet_uri = night_css
@@ -72,9 +71,8 @@ class Viewer(WebKit.WebView):
         
 
     def load_page(self):
-
         if self.epub is not None:
-            if platform.system() is "Windows":
+            if os.name == "nt":
                 self.load_uri("file:///"+self.epub.chapters[self.position].href)
             else:
                 self.load_uri("file://"+self.epub.chapters[self.position].href)

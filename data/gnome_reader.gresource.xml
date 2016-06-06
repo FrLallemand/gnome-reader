@@ -4,6 +4,7 @@
     <file preprocess="xml-stripblanks">popover_menu.ui</file>
     <file preprocess="xml-stripblanks">header_bar.ui</file>
     <file preprocess="xml-stripblanks">chapters_menu.ui</file>
+    <file preprocess="xml-stripblanks">meta_data_view.ui</file>
     <file>night_mode.css</file>
   </gresource>
 </gresources>
