@@ -307,7 +307,7 @@ class Application(Gtk.Application):
 
         
     def on_about(self, action, param):
-        about_dialog = Gtk.AboutDialog(authors=["François Lallemand"], 
+        about_dialog = Gtk.AboutDialog(authors=["François Lallemand", "Quentin Ladeveze"], 
                                        copyright="EMPTYYYYYYY",
                                        program_name="Gnome-reader",
                                        version="0.0.3",
