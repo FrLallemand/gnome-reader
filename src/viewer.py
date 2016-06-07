@@ -9,6 +9,7 @@ from gi.repository import Gtk, Gio, GLib, WebKit, Gdk
 from epub import Epub
 import sys
 import os
+from define import App
 if(sys.version_info >= (3,0)):
     from urllib.parse import quote
 else:
@@ -18,16 +19,14 @@ else:
 class Viewer(WebKit.WebView):
     def __init__(self):
         WebKit.WebView.__init__(self)
-        self.epub = None
         self.position = 0
         self.first_page=0
         self.last_page=0
-
-    def set_epub(self, epub):
-        self.epub = epub
-        self.first_page=0
-        self.last_page=len(self.epub.chapters)-1
     
+    def setup_view(self):
+        self.first_page=0
+        self.last_page=len(App().epub.chapters)-1
+
     def go_next_page(self):
         if self.position<self.last_page:
             self.position += 1
@@ -45,9 +44,9 @@ class Viewer(WebKit.WebView):
     def go_last_page(self):
         self.position = self.last_page
         self.load_page()
-            
+
     def jump_to_page(self, pos):
-        if pos<len(self.epub.chapters) and pos>=0:
+        if pos<len(App().epub.chapters) and pos>=0:
             self.position = pos
             self.load_page()
 
@@ -67,15 +66,14 @@ class Viewer(WebKit.WebView):
             self.props.zoom_level = 1.0 + ((value/10)*2)
         else:
             self.props.zoom_level = 1.0 + value/10
-        
-        
+
+
 
     def load_page(self):
-        if self.epub is not None:
+        if App().epub.is_loaded():
             if os.name == "nt":
-                self.load_uri("file:///"+self.epub.chapters[self.position].href)
+                self.load_uri("file:///"+App().epub.chapters[self.position].href)
             else:
-                self.load_uri("file://"+self.epub.chapters[self.position].href)
+                self.load_uri("file://"+App().epub.chapters[self.position].href)
         else:
             self.load_uri("about:blank")
-        

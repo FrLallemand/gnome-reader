@@ -14,31 +14,41 @@ class Chapter:
         self.id = id
         self.href = href
         self.title = title
-        
+
 class Epub():
-    def __init__(self, file_path):
+    def __init__(self):
         self.cache_path = GLib.get_user_cache_dir()+\
                           "/gnome-reader/"
-        
+
         if not os.path.exists(self.cache_path):
-            os.mkdir(self.cache_path)           
-                          
+            os.mkdir(self.cache_path)
+            print(self.cache_path)
+
         self.name = "" #os.path.basename(file_path)
-        self.cache_path+=os.path.basename(file_path)+\
-                          "EXTRACTED/"
-        self.file_path = file_path 
+        self.file_path = ""
         self.opf_path = ""
         self.toc_path = ""
         self.chapters = {}
+
+        self._loaded = False
+
+    def is_loaded(self):
+        return self._loaded
+
+    def set_file_path(self, file_path):
+        self.file_path = file_path
+        self.cache_path+=os.path.basename(file_path)+\
+                          "EXTRACTED/"
         if not os.path.exists(self.cache_path):
-            os.mkdir(self.cache_path)           
-    
+            os.mkdir(self.cache_path)
+
+
     def extract(self):
         shutil.rmtree(self.cache_path)
         zipfile.ZipFile(self.file_path).extractall(path=self.cache_path)
-    
-    
-    def prepare(self):        
+
+
+    def prepare(self):
         for event, element in ElementTree.iterparse(self.cache_path+"META-INF/container.xml"):
             if re.search('^rootfile$|}rootfile$', element.tag):
                 self.opf_path = self.cache_path+element.attrib['full-path']
@@ -55,9 +65,9 @@ class Epub():
                 spine.append(element.attrib['idref'])
             if re.search('^item$|}item$', element.tag):
                 # we get the manifest : all files unordered, their id, their href, their mimetype
-                # yay, tuple time ! <(°°<)  ^(°°)^  (>°°)>  
+                # yay, tuple time ! <(°°<)  ^(°°)^  (>°°)>
                 manifest.append((element.attrib['id'], element.attrib['href'], element.attrib['media-type']))
-                
+
         for count, i in enumerate(spine):
             for item in manifest:
                 if item[2] == "application/xhtml+xml":
@@ -73,7 +83,7 @@ class Epub():
                 for child in element.getchildren():
                     if re.search('^text$|}text$', child.tag):
                         self.name = child.text
-                
+
             if re.search('^navPoint$|}navPoint$', element.tag):
                 text = ""
                 src = ""
@@ -90,3 +100,5 @@ class Epub():
             for navpoint in navmap:
                 if navpoint[0] in self.chapters[i].href:
                     self.chapters[i].title = navpoint[1]
+
+        self._loaded = True
