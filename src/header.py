@@ -37,7 +37,7 @@ class Header(Gtk.HeaderBar):
         self._menu_button = Gtk.MenuButton()
         self._menu_button.set_image(Gtk.Image.new_from_icon_name("open-menu-symbolic", Gtk.IconSize.MENU))
         self.pack_end(self._menu_button)
-        
+
         self._chapters_button = Gtk.Button()
         self._chapters_button.set_label("Chapitres")
         self._chapters_button.set_sensitive(False)

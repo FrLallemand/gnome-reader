@@ -4,7 +4,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 #gi.require_version('Notify', '0.7')
-# gi.require_version('WebKit', '3.0')
+gi.require_version('WebKit', '3.0')
 from gi.repository import Gtk, Gio, GLib, WebKit, Gdk
 from epub import Epub
 import sys
@@ -22,7 +22,7 @@ class Viewer(WebKit.WebView):
         self.position = 0
         self.first_page=0
         self.last_page=0
-    
+
     def setup_view(self):
         self.first_page=0
         self.last_page=len(App().epub.chapters)-1
@@ -67,7 +67,9 @@ class Viewer(WebKit.WebView):
         else:
             self.props.zoom_level = 1.0 + value/10
 
-
+    def _zoom(self, action, state):
+        App().window.adjustment.set_value(self.adjustment.get_value() + self.adjustment.get_minimum_increment())
+        self.add_zoom(self.adjustment.get_value())
 
     def load_page(self):
         if App().epub.is_loaded():

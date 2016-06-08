@@ -1,0 +1,47 @@
+
+<interface>
+        <object class="GtkBox" id="popover_box">
+          <property name="visible">True</property>
+          <property name="margin">10</property>
+          <property name="spacing">2</property>
+          <property name="orientation">vertical</property>
+          <child>
+            <object class="GtkModelButton" id="toggle_night_mode">
+              <property name="visible">True</property>
+              <property name="action-name">win.toggle_night_mode</property>
+              <property name="can_focus">True</property>
+              <property name="receives_default">True</property>
+              <property name="text" translatable="yes">Night Mode</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkModelButton" id="meta_data_display_button">
+              <property name="visible">True</property>
+              <property name="action-name">win.display_meta_data</property>
+              <property name="text" translatable="yes">About the book</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkSeparator">
+                <property name="visible">True</property>
+                <property name="orientation">0</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkScale" id="zoom_level_scale">
+              <property name="visible">True</property>
+              <property name="can_focus">True</property>
+              <property name="draw_value">False</property>
+              <property name="has_origin">True</property>
+              <property name="round_digits">0</property>
+              <property name="restrict_to_fill_level">False</property>
+              <signal name="value-changed" handler="_on_scale_value_changed" swapped="no"/>
+              <marks>
+                  <mark value="0" position="bottom"/>
+                  <mark value="-8" position="bottom"/>
+                  <mark value="8" position="bottom"/>
+              </marks>
+            </object>
+          </child>
+        </object>
+</interface>
