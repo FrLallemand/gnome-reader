@@ -4,6 +4,13 @@ An epub reader for gnome, using gnome technologies and gtk
 
 Currently in development.
 
+to execute : 
+cd data/
+glib-compile-resources gnome_reader.gresource.xml
+cd ../
+python src/ui.py
+
+
 ## TODO
 * A makefile
 * Port to WebKit2 instead of WebKit
