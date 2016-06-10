@@ -7,7 +7,7 @@
     <child>
         <object class="GtkButton" id="open_epub_button">
             <property name="visible">True</property>
-            <property name="action-name">win.open-epub</property>
+            <property name="action-name">win.open_epub</property>
             <property name="label" translatable="yes">Open</property>
         </object>
         <packing>
@@ -24,7 +24,8 @@
             <child>
                 <object class="GtkButton" id="navigation_previous_button">
                     <property name="visible">True</property>
-                    <property name="action-name">win.go-previous</property>
+                    <property name="action-name">win.go_previous_or_next</property>
+                    <property name="action-target">"previous"</property>
                     <property name="sensitive">False</property>
                     <child>
                         <object class="GtkImage" id="navigation_previous_icon">
@@ -41,7 +42,8 @@
             <child>
                 <object class="GtkButton" id="navigation_next_button">
                     <property name="visible">True</property>
-                    <property name="action-name">win.go-next</property>
+                    <property name="action-name">win.go_previous_or_next</property>
+                    <property name="action-target">"next"</property>
                     <property name="sensitive">False</property>
                     <child>
                         <object class="GtkImage" id="navigation_next_icon">
@@ -61,12 +63,12 @@
         </packing>
     </child>
     <child>
-        <object class="GtkMenuButton" id="settings_button">
+        <object class="GtkMenuButton" id="menu_button">
             <property name="visible">True</property>
             <property name="use-popover">True</property>
             <property name="direction">none</property>
             <child>
-                <object class="GtkImage" id="settings_icon">
+                <object class="GtkImage" id="menu_icon">
                     <property name="visible">True</property>
                     <property name="icon-name">open-menu-symbolic</property>
                     <property name="icon-size">1</property>

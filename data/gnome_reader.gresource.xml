@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/gnome/gnome_reader">
+  <gresource prefix="/org/gnome/Reader">
+    <file alias="gtk/menus.ui" preprocess="xml-stripblanks">app_menu.ui</file>
     <file preprocess="xml-stripblanks">settings_menu.ui</file>
     <file preprocess="xml-stripblanks">header_bar.ui</file>
     <file preprocess="xml-stripblanks">chapters_menu.ui</file>

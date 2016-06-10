@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+
+import os
+import sys
+import gi
+from gi.repository import Gio
+import gnomereader
+
+
+if __name__ == "__main__":
+    srcdir = os.path.abspath(os.path.join(os.path.dirname(gnomereader.__file__), '..'))
+
+    pkgdatadir = os.path.join(srcdir, 'data')
+
+    resource = Gio.resource_load(os.path.join(pkgdatadir, 'gnome_reader.gresource'))
+    Gio.resources_register(resource)
+
+    from gnomereader.application import Application
+
+    app = Application()
+    exit_status = app.run(sys.argv)
+    sys.exit(exit_status)

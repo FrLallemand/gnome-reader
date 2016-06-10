@@ -96,7 +96,7 @@ class Epub():
                         src = child.attrib['src']
                 navmap.append((src, text))
 
-        for i in range(0, len(self.chapters)-1):
+        for i in range(0, len(self.chapters)):
             for navpoint in navmap:
                 if navpoint[0] in self.chapters[i].href:
                     self.chapters[i].title = navpoint[1]
