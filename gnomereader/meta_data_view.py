@@ -1,10 +1,10 @@
-#!C:\Python27\python.exe
-# -*- encoding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('WebKit', '3.0')
-from gi.repository import Gtk, Gio, GLib, WebKit, Gdk, GObject
+from gi.repository import Gtk, GObject
 
 
 class MetaDataView(GObject.GObject):

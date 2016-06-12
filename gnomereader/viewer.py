@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import gi
@@ -13,12 +13,17 @@ gi.require_version('WebKit', '3.0')
 from gi.repository import GObject, WebKit
 from gnomereader.epub import Epub
 
+
 class Viewer(GObject.GObject):
 
     __gsignals__ = {
-	        'file-opened': (GObject.SignalFlags.RUN_FIRST, None, ()),
-	        'page-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
-        }
+        'file-opened': (GObject.SignalFlags.RUN_FIRST,
+                        None,
+                        ()),
+        'page-changed': (GObject.SignalFlags.RUN_FIRST,
+                         None,
+                         ()),
+    }
 
     def __init__(self, parent_window):
         GObject.GObject.__init__(self)
@@ -36,7 +41,7 @@ class Viewer(GObject.GObject):
         self.epub.set_file_path(file)
         self.epub.extract()
         self.epub.prepare()
-        self.last_page=len(self.epub.chapters) - 1
+        self.last_page = len(self.epub.chapters) - 1
         self.emit("file-opened")
         self.go_first_page()
 

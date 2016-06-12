@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import mimetypes
@@ -10,6 +10,7 @@ from gi.repository import Gtk, Gio, GLib, Gdk
 from gnomereader.toolbar import ToolBar
 from gnomereader.viewer import Viewer
 from gnomereader.meta_data_view import MetaDataView
+
 
 class Window(Gtk.ApplicationWindow):
     """
@@ -34,7 +35,6 @@ class Window(Gtk.ApplicationWindow):
         self.connect("key-press-event", self._on_keypress)
         self._create_actions()
         self._setup_view()
-
 
     def _on_keypress(self, widget, data):
         if self.stack.get_visible_child_name() == "main_view":
@@ -85,7 +85,8 @@ class Window(Gtk.ApplicationWindow):
         open_epub.connect("activate", self._open_epub)
         self.add_action(open_epub)
 
-        chapter_selected = Gio.SimpleAction.new('select-chapter', GLib.VariantType("i"))
+        chapter_selected = Gio.SimpleAction.new('select-chapter',
+                                                GLib.VariantType("i"))
         chapter_selected.connect('activate', self._select_chapter)
         self.add_action(chapter_selected)
 
@@ -97,7 +98,9 @@ class Window(Gtk.ApplicationWindow):
         go_previous.connect('activate', self._go_previous)
         self.add_action(go_previous)
 
-        toggle_night_mode = Gio.SimpleAction.new_stateful("toggle-night-mode", None, GLib.Variant.new_boolean(False))
+        toggle_night_mode = Gio.SimpleAction.new_stateful("toggle-night-mode",
+                                                          None,
+                                                          GLib.Variant.new_boolean(False))
         toggle_night_mode.connect("change-state", self._toggle_night_mode)
         self.add_action(toggle_night_mode)
 
@@ -117,10 +120,12 @@ class Window(Gtk.ApplicationWindow):
         self.viewer.add_zoom(user_data)
 
     def _zoom_in(self, action, state):
-        self.toolbar.adjustment.set_value(self.toolbar.adjustment.get_value() + self.toolbar.adjustment.get_minimum_increment())
+        self.toolbar.adjustment.set_value(self.toolbar.adjustment.get_value() +
+                                          self.toolbar.adjustment.get_minimum_increment())
 
     def _zoom_out(self, action, state):
-        self.toolbar.adjustment.set_value(self.toolbar.adjustment.get_value() - self.toolbar.adjustment.get_minimum_increment())
+        self.toolbar.adjustment.set_value(self.toolbar.adjustment.get_value() -
+                                          self.toolbar.adjustment.get_minimum_increment())
 
     def _select_chapter(self, widget, user_data):
         self.viewer.go_page(user_data)
@@ -144,7 +149,8 @@ class Window(Gtk.ApplicationWindow):
     def _on_page_changed(self, widget):
         if self.viewer.epub.is_loaded():
             self.set_focus(self.viewer.web_view)
-            self.toolbar.set_title(self.viewer.epub.name, self.viewer.epub.chapters[self.viewer.position].title)
+            self.toolbar.set_title(self.viewer.epub.name,
+                                   self.viewer.epub.chapters[self.viewer.position].title)
             if self.viewer.position == self.viewer.last_page:
                 self.lookup_action("go-next").set_enabled(False)
             else:

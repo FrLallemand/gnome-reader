@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-from gi.repository import Gtk, GObject, Gio, GLib
+from gi.repository import Gtk, GObject
+
 
 class ToolBar(GObject.GObject):
 
     __gsignals__ = {
-            'chapter-selected': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, )),
-            'zoom-level-changed': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, )),
-        }
+        'chapter-selected': (GObject.SignalFlags.RUN_FIRST,
+                             None,
+                             (GObject.TYPE_INT, )),
+        'zoom-level-changed': (GObject.SignalFlags.RUN_FIRST,
+                               None,
+                               (GObject.TYPE_INT, )),
+    }
 
     def __init__(self):
         GObject.GObject.__init__(self)

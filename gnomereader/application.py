@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('WebKit', '3.0')
-from gi.repository import Gtk, Gio, GLib, Gdk
+from gi.repository import Gtk, Gio, GLib
 from gnomereader.window import Window
+
 
 class Application(Gtk.Application):
 
@@ -17,7 +18,7 @@ class Application(Gtk.Application):
         GLib.set_prgname('gnome-reader')
 
         # TODO : create config schema
-        #self.settings = Gio.Settings.new('org.gnome.Reader')
+        # self.settings = Gio.Settings.new('org.gnome.Reader')
 
         self._window = None
 
@@ -47,7 +48,8 @@ class Application(Gtk.Application):
             self.add_action(action)
 
     def about(self, action, param):
-        about_dialog = Gtk.AboutDialog(authors=["François Lallemand", "Quentin Ladeveze"],
+        about_dialog = Gtk.AboutDialog(authors=["François Lallemand",
+                                                "Quentin Ladeveze"],
                                        copyright="EMPTYYYYYYY",
                                        program_name="Gnome-reader",
                                        version="0.0.3",
